@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games Pack Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 20px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #32CD32, #90EE90);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(50, 205, 50, 0.3);
+        }
+
+        .subtitle {
+            color: #cccccc;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(50, 205, 50, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(50, 205, 50, 0.2);
+        }
+
+        .section h2 {
+            color: #32CD32;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .section p {
+            color: #e0e0e0;
+            font-size: 1rem;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            color: #32CD32;
+            margin-top: 10px;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #32CD32, #90EE90);
+            color: #000000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(50, 205, 50, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(50, 205, 50, 0.5);
+            background: linear-gradient(45deg, #90EE90, #32CD32);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #32CD32;
+            border: 2px solid #32CD32;
+        }
+
+        .btn-secondary:hover {
+            background: #32CD32;
+            color: #000000;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            margin: 5% auto;
+            padding: 0;
+            border: 2px solid #32CD32;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(50, 205, 50, 0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(45deg, #32CD32, #90EE90);
+            color: #000000;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .modal-body {
+            padding: 20px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 10px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #32CD32;
+            border-radius: 10px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #90EE90;
+        }
+
+        .close {
+            color: #000000;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            opacity: 0.7;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #32CD32;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #32CD32;
+            box-shadow: 0 0 10px rgba(50, 205, 50, 0.3);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .required {
+            color: #ff6b6b;
+        }
+
+        .optional {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="logo">Games Pack Store</h1>
+            <p class="subtitle">Your Ultimate Gaming Destination</p>
+        </div>
+
+        <div class="section">
+            <h2>About Us</h2>
+            <p>Welcome to Games Pack Store, your premier destination for the latest and greatest gaming experiences. We specialize in curating the finest collection of games, ensuring every gamer finds their perfect match. From action-packed adventures to mind-bending puzzles, we deliver quality entertainment right to your doorstep.</p>
+        </div>
+
+        <div class="section">
+            <h2>Our Location</h2>
+            <div class="location">
+                <span>📍</span>
+                <span>Egypt - Alexandria - Agami</span>
+            </div>
+        </div>
+
+        <div class="buttons-container">
+            <button class="btn" onclick="openOrderModal()">Place Your Order</button>
+            <button class="btn btn-secondary" onclick="contactUs()">Contact Us</button>
+        </div>
+    </div>
+
+    <!-- Order Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeOrderModal()">&times;</span>
+                Place Your Order
+            </div>
+            <div class="modal-body">
+                <form id="orderForm">
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="games">Games to Order <span class="required">*</span></label>
+                        <textarea id="games" name="games" required placeholder="Tell us which games you'd like to order..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="social">Social Media Contact <span class="optional">(Optional)</span></label>
+                        <input type="url" id="social" name="social" placeholder="Your social media profile link">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Name <span class="optional">(Optional)</span></label>
+                        <input type="text" id="name" name="name" maxlength="50" placeholder="Your name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Home Address <span class="optional">(Optional)</span></label>
+                        <textarea id="address" name="address" placeholder="Your delivery address..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn submit-btn">Submit Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openOrderModal() {
+            document.getElementById('orderModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function contactUs() {
+            // Contact us link - currently empty as requested
+            alert('Contact us functionality will be implemented soon!');
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('orderModal');
+            if (event.target === modal) {
+                closeOrderModal();
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const orderData = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (value.trim() !== '') {
+                    orderData[key] = value;
+                }
+            }
+            
+            // Add timestamp to order data
+            const now = new Date();
+            orderData.orderDate = now.toISOString();
+            orderData.orderTimestamp = now.getTime();
+            
+            // Generate filename: phonenum_date_time.json
+            const phoneNum = orderData.phone.replace(/[^\d]/g, ''); // Remove non-digits
+            const dateStr = now.toISOString().slice(0, 10).replace(/-/g, ''); // YYYYMMDD
+            const timeStr = now.toTimeString().slice(0, 8).replace(/:/g, ''); // HHMMSS
+            const filename = `${phoneNum}_${dateStr}_${timeStr}.json`;
+            
+            // Create JSON string
+            const jsonString = JSON.stringify(orderData, null, 2);
+            
+            // Create and download the file
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            console.log('Order submitted:', orderData);
+            console.log('Filename would be:', filename);
+            console.log('JSON content:', jsonString);
+            
+            alert(`Thank you for your order! Your order has been saved as ${filename}. We will contact you soon.`);
+            closeOrderModal();
+            this.reset();
+        });
+
+        // Add smooth scrolling and animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    section.style.transition = 'all 0.6s ease';
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
